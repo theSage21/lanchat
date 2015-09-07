@@ -1,6 +1,7 @@
 import socket
 from . import config
 from . import utils
+from . import error
 
 # Set the socket parameters
 
@@ -14,7 +15,10 @@ class Client:
             sk.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, True)
             sk.settimeout(3)
             sk.bind(Client.broadcast_addr)
-            data, addr = sk.recvfrom(1024)
+            try:
+                data, addr = sk.recvfrom(1024)
+            except socket.timeout:
+                raise error.ServerNotFound()
             data = data.decode()[1:-1]
             ip, port = data.split(',')
             ip = ip[1:-1]
