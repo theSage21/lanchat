@@ -30,11 +30,12 @@ def process_args(args):
         try:
             c = client.Client()
         except error.ServerNotFound:
+            print('There is no server on the LAN.')
+            print('Making this instance a server')
+            print('After this is done start another instance of a client')
             s = server.Server()
-            import threading
-            t = threading.Thread(target=s.run, daemon=True)
-            t._start()
-            c = client.Client()
+            return s
+        else:
             return c
 
 
