@@ -3,12 +3,12 @@ import lanchat
 
 version = '.'.join(map(str, lanchat.__version__))
 long_desc = '''
-LAN chat
+Distributed LAN chat
 '''
 
 setup(name='lanchat',
       version=version,
-      description='LAN chat',
+      description='Distributed LAN chat',
       long_description=long_desc,
       url='https://github.com/theSage21/lanchat',
       author='Arjoonn Sharma',
