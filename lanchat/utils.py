@@ -11,7 +11,7 @@ def __command(txt, cmd):
 
 def msg(txt, sock):
     "Send txt as message to sock"
-    txt = _config.Col.HEADER + txt + _config.Col.ENDC
+    txt = _config.Col.BOLD + txt + _config.Col.ENDC
     string = __command(txt, 'MSG')
     sock.sendall(string)
 
