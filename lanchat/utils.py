@@ -1,3 +1,4 @@
+import time
 import socket
 from . import config, error
 
@@ -41,6 +42,7 @@ def get_server_sock():
 def get_client_sock(addr):
     "Get a client socket"
     s = socket.create_connection(addr)
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, True)
     s.setblocking(False)
     return s
 
@@ -48,13 +50,21 @@ def get_client_sock(addr):
 def get_beacon():
     "Get a beacon socket"
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, True)
     s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, True)
     return s
 
 
 def get_existing_server_addr():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.bind(('', config.broadcast_addr[1]))
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, True)
+    while True:
+        try:
+            s.bind(('', config.broadcast_addr[1]))
+        except:
+            time.sleep(1)
+        else:
+            break
     s.settimeout(config.server_search_timeout)
     try:
         data, addr = s.recvfrom(config.BUF_SIZE)
@@ -71,5 +81,8 @@ def recv(sock):
         return None, None
     else:
         data = data.decode().split(config.SEPERATOR)
-        cmd, msg = data[0], data[1]
+        try:
+            cmd, msg = data[0], data[1]
+        except IndexError:
+            cmd, msg = None, None
         return cmd, msg

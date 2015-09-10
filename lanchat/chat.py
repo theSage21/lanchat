@@ -56,7 +56,7 @@ class Node:
             utils.quit(self.__s)
         else:  # server
             try:
-                with self.__clients_list_lock:
+                with self.__client_list_lock:
                     new_server = self.clients.pop()
             except:  # nobody was left
                 pass
@@ -94,7 +94,7 @@ class Node:
                 continue
             if cmd == 'MSG':
                 if self.mode == 's':
-                    to_send.append(msg)
+                    to_send.append((msg, com))
                 print(msg)
             elif cmd == 'QUIT':
                 if self.mode == 's':  # client quit
@@ -108,6 +108,15 @@ class Node:
                 if self.mode == 'c':  # assume a server role if client
                     self.__s.close()
                     self.__make_server()
+        for msg, sender in to_send:
+            if self.mode == 'c':
+                utils.msg(msg, self.__s)
+            else:
+                with self.__client_list_lock:
+                    for com in self.clients:
+                        if com == sender:
+                            continue
+                        utils.msg(msg, com)
 
     def __beacon_thread(self):
         b = utils.get_beacon()
@@ -131,7 +140,7 @@ class Node:
             if self.mode == 'c':  # client
                 utils.msg(msg, self.__s)
             else:  # server
-                with self.__clients_list_lock:
+                with self.__client_list_lock:
                     for com in self.clients:
                         utils.msg(msg, com)
 
