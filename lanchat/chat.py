@@ -1,5 +1,5 @@
 import time
-from threading import Thread
+from threading import Thread, Lock
 from queue import deque
 from . import utils
 from . import config
@@ -7,6 +7,7 @@ from . import config
 
 class Node:
     def __init__(self):
+        self.__client_list_lock = Lock()
         self.alive = True
         addr = utils.get_existing_server_addr()
         if addr is None:
@@ -23,6 +24,7 @@ class Node:
         o.start()
         self.threads.append(o)
         try:
+            print('Starting input thread')
             self.__input_thread()
         except KeyboardInterrupt:
             self.__shutdown()
@@ -36,7 +38,11 @@ class Node:
                     pass
                 else:
                     com.setblocking(False)
-                    self.clients.append(com)
+                    with self.__client_list_lock:
+                        # prevent list form mutating
+                        # while another thread is iterating
+                        self.clients.append(com)
+                        print('User count: {}'.format(len(self.clients)))
 
     def __shutdown(self):
         self.alive = False
@@ -50,7 +56,8 @@ class Node:
             utils.quit(self.__s)
         else:  # server
             try:
-                new_server = self.clients.pop()
+                with self.__clients_list_lock:
+                    new_server = self.clients.pop()
             except:  # nobody was left
                 pass
             else:
@@ -59,9 +66,10 @@ class Node:
                 utils.assume_server(new_server)
                 # tell others to quit
                 print('Telling everyone Im leaving')
-                for com in self.clients:
-                    utils.quit(com)
-
+                with self.__client_list_lock:
+                    for com in self.clients:
+                        utils.quit(com)
+        print('LanChat is closing. Use again')
         self.__s.close()
 
     def __get_instructions(self):
@@ -71,10 +79,11 @@ class Node:
             inst = [(c, m, self.__s)]
         else:
             inst = []
-            for com in self.clients:
-                c, m = utils.recv(com)
-                if c is not None:
-                    inst.append((c, m, com))
+            with self.__client_list_lock:
+                for com in self.clients:
+                    c, m = utils.recv(com)
+                    if c is not None:
+                        inst.append((c, m, com))
         return inst
 
     def __process_instructions(self, inst):
@@ -90,7 +99,8 @@ class Node:
             elif cmd == 'QUIT':
                 if self.mode == 's':  # client quit
                     com.close()
-                    self.clients.remove(com)
+                    with self.__client_list_lock:
+                        self.clients.remove(com)
                 else:  # server quit
                     self.__s.close()
                     self.__make_client()  # wait for new server
@@ -104,7 +114,7 @@ class Node:
         while self.alive:
             msg = config.broadcast_msg.encode(config.ENCODING)
             b.sendto(msg, config.broadcast_addr)
-            time.sleep(1)
+            time.sleep(0.1)
         b.close()
 
     def __output_thread(self):
@@ -121,16 +131,18 @@ class Node:
             if self.mode == 'c':  # client
                 utils.msg(msg, self.__s)
             else:  # server
-                for com in self.clients:
-                    utils.msg(msg, com)
+                with self.__clients_list_lock:
+                    for com in self.clients:
+                        utils.msg(msg, com)
 
     def __make_server(self):
         "Make this node a server"
         print('Making server, getting listening socket')
+        self.mode = 's'
         sock = utils.get_server_sock()
         self.__s = sock
-        self.clients = deque()
-        self.mode = 's'
+        with self.__client_list_lock:
+            self.clients = deque()
         self.threads = deque()
         print('Making beacon')
         b = Thread(target=self.__beacon_thread, name='beacon')
@@ -144,9 +156,10 @@ class Node:
     def __make_client(self):
         "Make this node a client"
         print('Making client, getting server connection')
+        self.mode = 'c'
         addr = utils.get_existing_server_addr()
         sock = utils.get_client_sock(addr)
         self.__s = sock
-        self.mode = 'c'
-        self.clients = deque()
+        with self.__client_list_lock:
+            self.clients = deque()
         self.threads = deque()
