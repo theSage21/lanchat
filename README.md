@@ -1,7 +1,6 @@
 lanchat
 ====
 
-<<<<<<< HEAD
 A LAN chatting program in python based on goodwill.
 
 Things you should know
@@ -17,7 +16,7 @@ How to use
 
 `$ pip install lanchat`
 `$ python3 lanchat`
-=======
+
 Install
 -------
 
@@ -30,4 +29,3 @@ Run
 `lanchat`
 
 `lanchat --version`
->>>>>>> 40396febce4a20bd404a0b5204f2caa18e81f883
