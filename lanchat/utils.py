@@ -1,18 +1,17 @@
-import time
-import socket
-from . import config, error
+import time as _time
+import socket as _socket
+from . import config as _config
 
 
 def __command(txt, cmd):
-    if cmd not in config.CMDS:
-        raise error.InvalidCommand
-    string = config.MSG_FORMAT.format(cmd, txt)
-    string = string.encode(config.ENCODING)
+    string = _config.MSG_FORMAT.format(cmd, txt)
+    string = string.encode(_config.ENCODING)
     return string
 
 
 def msg(txt, sock):
     "Send txt as message to sock"
+    txt = _config.Col.HEADER + txt + _config.Col.ENDC
     string = __command(txt, 'MSG')
     sock.sendall(string)
 
@@ -31,56 +30,56 @@ def assume_server(sock):
 
 def get_server_sock():
     "Get a server socket"
-    s = socket.socket()
-    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, True)
+    s = _socket.socket()
+    s.setsockopt(_socket.SOL_SOCKET, _socket.SO_REUSEADDR, True)
     s.setblocking(False)
-    s.bind(('0.0.0.0', config.server_listen_port))
+    s.bind(('0.0.0.0', _config.server_listen_port))
     s.listen(5)
     return s
 
 
 def get_client_sock(addr):
     "Get a client socket"
-    s = socket.create_connection(addr)
-    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, True)
+    s = _socket.create_connection(addr)
+    s.setsockopt(_socket.SOL_SOCKET, _socket.SO_REUSEADDR, True)
     s.setblocking(False)
     return s
 
 
 def get_beacon():
     "Get a beacon socket"
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, True)
-    s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, True)
+    s = _socket.socket(_socket.AF_INET, _socket.SOCK_DGRAM)
+    s.setsockopt(_socket.SOL_SOCKET, _socket.SO_REUSEADDR, True)
+    s.setsockopt(_socket.SOL_SOCKET, _socket.SO_BROADCAST, True)
     return s
 
 
 def get_existing_server_addr():
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, True)
+    s = _socket.socket(_socket.AF_INET, _socket.SOCK_DGRAM)
+    s.setsockopt(_socket.SOL_SOCKET, _socket.SO_REUSEADDR, True)
     while True:
         try:
-            s.bind(('', config.broadcast_addr[1]))
+            s.bind(('', _config.broadcast_addr[1]))
         except:
-            time.sleep(1)
+            _time.sleep(1)
         else:
             break
-    s.settimeout(config.server_search_timeout)
+    s.settimeout(_config.server_search_timeout)
     try:
-        data, addr = s.recvfrom(config.BUF_SIZE)
+        data, addr = s.recvfrom(_config.BUF_SIZE)
     except OSError:
         return None
     else:
-        return (addr[0], config.server_listen_port)
+        return (addr[0], _config.server_listen_port)
 
 
 def recv(sock):
     try:
-        data = sock.recv(config.BUF_SIZE)
+        data = sock.recv(_config.BUF_SIZE)
     except OSError:
         return None, None
     else:
-        data = data.decode().split(config.SEPERATOR)
+        data = data.decode().split(_config.SEPERATOR)
         try:
             cmd, msg = data[0], data[1]
         except IndexError:
