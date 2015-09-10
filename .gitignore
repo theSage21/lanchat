@@ -48,10 +48,6 @@ coverage.xml
 *.mo
 *.pot
 
-# Django stuff:
-*.log
-db.sqlite3
-
 # Sphinx documentation
 docs/_build/
 
@@ -60,3 +56,6 @@ target/
 
 # Vim
 *swp
+
+# Misc
+client.py
