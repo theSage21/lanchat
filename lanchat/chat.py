@@ -135,7 +135,7 @@ class Node:
         while self.alive:
             msg = config.broadcast_msg.encode(config.ENCODING)
             b.sendto(msg, config.broadcast_addr)
-            time.sleep(0.1)
+            time.sleep(config.beacon_delay)
         b.close()
 
     def __output_thread(self):
