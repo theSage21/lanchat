@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <title>Lanchat by theSage21</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Lanchat</h1>
+        <h2>Distributed LAN chatting program.</h2>
+
+        <section id="downloads">
+          <a href="https://github.com/theSage21/lanchat/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/theSage21/lanchat/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/theSage21/lanchat" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h1>
+<a id="lanchat" class="anchor" href="#lanchat" aria-hidden="true"><span class="octicon octicon-link"></span></a>lanchat</h1>
+
+<p><a href="http://badge.fury.io/py/lanchat"><img src="https://badge.fury.io/py/lanchat.svg" alt="PyPI"></a></p>
+
+<p>A LAN chatting program in python based on goodwill. It does not need a special
+server setup. Install on clients and just run.</p>
+
+<h2>
+<a id="things-you-should-know" class="anchor" href="#things-you-should-know" aria-hidden="true"><span class="octicon octicon-link"></span></a>Things you should know</h2>
+
+<ul>
+<li>No selecting a server( finds it on it's own)</li>
+<li>New server selected if current goes down</li>
+<li>
+<p>Picks your username from the shell</p>
+
+<ul>
+<li>You can change it though</li>
+<li>
+<pre><code> from lanchat import chat
+ n = chat.Node()
+ n.name='FooBar'
+ n.run()
+</code></pre>
+
+<ul>
+<li>Printing is wierd ( Can someone help me fix it?)</li>
+<li>No encryption (boo)</li>
+<li>No protection against DOS</li>
+</ul>
+
+<h2>
+<a id="how-to-use" class="anchor" href="#how-to-use" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to use</h2>
+</li>
+</ul>
+</li>
+</ul>
+
+<pre><code>$ pip install lanchat
+$ python3 lanchat
+</code></pre>
+
+<h2>
+<a id="install" class="anchor" href="#install" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install</h2>
+
+<pre><code>$ virtualenv -p python3 env
+$ source enb/bin/activate
+$pip install lanchat
+</code></pre>
+
+<h2>
+<a id="run" class="anchor" href="#run" aria-hidden="true"><span class="octicon octicon-link"></span></a>Run</h2>
+
+<p><code>lanchat</code></p>
+
+<p>or</p>
+
+<p><code>lanchat --version</code></p>
+      </section>
+    </div>
+
+    
+  </body>
+</html>
