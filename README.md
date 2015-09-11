@@ -11,26 +11,18 @@ Things you should know
 
 - No selecting a server( finds it on it's own)
 - New server selected if current goes down
+- Printing is wierd ( Can someone help me fix it?)
+- No encryption (boo)
+- No protection against DOS
 - Picks your username from the shell
-    - You can change it though
-    - ```
+    * You can change it though
+    * ```
          from lanchat import chat
          n = chat.Node()
          n.name='FooBar'
          n.run()
       ```
-- Printing is wierd ( Can someone help me fix it?)
-- No encryption (boo)
-- No protection against DOS
 
-
-How to use
-----------
-
-```
-$ pip install lanchat
-$ python3 lanchat
-```
 
 Install
 -------
@@ -41,12 +33,10 @@ $ source enb/bin/activate
 $pip install lanchat
 ```
 
+How to use
+----------
 
-Run
----
-
-`lanchat`
-
-or
-
-`lanchat --version`
+```
+$ lanchat
+$ lanchat --version
+```
