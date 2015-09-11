@@ -40,3 +40,5 @@ How to use
 $ lanchat
 $ lanchat --version
 ```
+
+![Screenshot](screenshot.png)
