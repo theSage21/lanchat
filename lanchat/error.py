@@ -4,3 +4,7 @@ class LanChatError(Exception):
 
 class ServerNotFound(LanChatError):
     pass
+
+
+class InvalidCommand(LanChatError):
+    pass

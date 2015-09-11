@@ -1,9 +1,12 @@
 import time as _time
 import socket as _socket
 from . import config as _config
+from . import error as _err
 
 
 def __command(txt, cmd):
+    if cmd not in _config.CMDS:
+        raise _err.InvalidCommand(cmd + ' not a Valid command')
     string = _config.MSG_FORMAT.format(cmd, txt)
     string = string.encode(_config.ENCODING)
     return string
@@ -11,7 +14,6 @@ def __command(txt, cmd):
 
 def msg(txt, sock):
     "Send txt as message to sock"
-    txt = _config.Col.BOLD + txt + _config.Col.ENDC
     string = __command(txt, 'MSG')
     sock.sendall(string)
 

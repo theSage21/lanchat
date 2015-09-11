@@ -107,7 +107,8 @@ class Node:
             if cmd == 'MSG':
                 if self.mode == 's':
                     to_send.append((msg, com))
-                print(msg)
+                txt = config.Col.BOLD + msg + config.Col.ENDC
+                print(txt)
             elif cmd == 'QUIT':
                 if self.mode == 's':  # client quit
                     com.close()
