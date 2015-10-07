@@ -24,4 +24,5 @@ class Col:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
-prompt = Col.OKGREEN + 'LC:> ' + Col.ENDC  # lanchat prompt
+
+prompt = 'LC:>'
