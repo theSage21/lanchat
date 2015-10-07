@@ -23,6 +23,8 @@ Things you should know
          n.run()
       ```
 
+**Note** : In case the chat does not run check that you are allowed to broadcast on the network.
+
 
 Install
 -------
