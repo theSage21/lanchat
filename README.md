@@ -22,8 +22,11 @@ Things you should know
          n.name='FooBar'
          n.run()
       ```
+- It's **pseudo-distributed** . It actually uses a server-client model of communication
+  but does so in a manner that everyone just ends up seeing the client.
 
-**Note** : In case the chat does not run check that you are allowed to broadcast on the network.
+
+**Note** : In case the chat does not run check that you are allowed to do UDP broadcast on the network.
 
 
 Install
@@ -32,7 +35,7 @@ Install
 ```
 $ virtualenv -p python3 env
 $ source enb/bin/activate
-$pip install lanchat
+$ pip install lanchat
 ```
 
 How to use
@@ -42,5 +45,7 @@ How to use
 $ lanchat
 $ lanchat --version
 ```
+
+`$ lanchat -c` for the coloured version of the software.
 
 ![Screenshot](screenshot.png)
