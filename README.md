@@ -4,7 +4,8 @@ lanchat
 [![PyPI](https://badge.fury.io/py/lanchat.svg)](http://badge.fury.io/py/lanchat)
 
 A LAN chatting program in python based on goodwill. It does not need a special
-server setup. Install on clients and just run.
+server setup. Install on clients and just run. Only tested on python3.x
+
 
 Things you should know
 ----------------------
@@ -14,18 +15,16 @@ Things you should know
 - Printing is wierd ( Can someone help me fix it?)
 - No encryption (boo)
 - No protection against DOS
-- Picks your username from the shell
-    * You can change it though
-    * ```
-         from lanchat import chat
-         n = chat.Node()
-         n.name='FooBar'
-         n.run()
-      ```
-
+- Picks your username from the shell (you can change it though)
 - It's **pseudo-distributed** . It actually uses a server-client model of communication
   but does so in a manner that everyone just ends up seeing the client.
 
+```
+from lanchat import chat
+n = chat.Node()
+n.name='FooBar'
+n.run()
+```
 
 **Note** : In case the chat does not run check that you are allowed to do UDP broadcast on the network.
 
