@@ -44,6 +44,8 @@ How to use
 ```
 $ lanchat
 $ lanchat --version
+$ lanchat -c
+$ lanchat -a 'notify-send LANCHAT_message'
 ```
 
 `$ lanchat -c` for the coloured version of the software.
