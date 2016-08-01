@@ -20,7 +20,13 @@ def add_arguments(parser):
     parser.add_argument('-c',
                         '--color',
                         action='store_true',
+                        default=False,
                         help='colored output')
+    parser.add_argument('-a',
+                        '--alert',
+                        action='store',
+                        default='',
+                        help='supply a command to run when alerts are issued')
     return parser
 
 
@@ -30,7 +36,7 @@ def process_args_and_get_node(args):
         version = 'v ' + '.'.join(map(str, __version__))
         print(version)
         return None
-    c = chat.Node(args.color)
+    c = chat.Node(args.color, alert=args.alert)
     return c
 
 

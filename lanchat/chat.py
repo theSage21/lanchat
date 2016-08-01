@@ -1,3 +1,4 @@
+import os
 import time
 from threading import Thread, Lock
 from queue import deque
@@ -20,10 +21,12 @@ def stats(txt, color=False):
 
 
 class Node:
-    def __init__(self, color=False):
+    def __init__(self, color=False, alert=''):
         self.__client_list_lock = Lock()
         self.alive = True
         self.color = color
+        self.alert = alert
+        self.issue_alert = False
         addr = utils.get_existing_server_addr()
         if self.color:
             config.prompt = config.Col.OKGREEN + config.prompt + config.Col.ENDC  # lanchat prompt
@@ -117,6 +120,8 @@ class Node:
                 else:
                     txt = msg
                 print(txt)
+                if self.issue_alert:
+                    os.system(self.alert)
             elif cmd == 'QUIT':
                 if self.mode == 's':  # client quit
                     com.close()
@@ -155,8 +160,11 @@ class Node:
 
     def __input_thread(self):
         "Input thread"
+        last_input = time.time()
         while self.alive:
             x = input(config.prompt)
+            self.issue_alert = (time.time() - last_input) > 10
+            last_input = time.time()
             msg = self.name + ': ' + x
             if self.mode == 'c':  # client
                 utils.msg(msg, self.__s)
